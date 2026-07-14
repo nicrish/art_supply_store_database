@@ -1,0 +1,31 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "development": "nodemon server.js",
+    "production": "npx forever start server.js",
+    "stop_production": "npx forever stop server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gracemeyer2015/CS_340_Project_Group_41.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gracemeyer2015/CS_340_Project_Group_41/issues"
+  },
+  "homepage": "https://github.com/gracemeyer2015/CS_340_Project_Group_41#readme",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "forever": "^4.0.3",
+    "mysql2": "^3.14.3",
+    "nodemon": "^3.1.10"
+  },
+  "devDependencies": {
+    "@ljharb/tsconfig": "^0.3.2"
+  }
+}

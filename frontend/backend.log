@@ -1,0 +1,14 @@
+nohup: ignoring input
+
+> ptda-package@0.0.0 development
+> vite
+
+Port 5173 is in use, trying another one...
+Port 5174 is in use, trying another one...
+Port 5175 is in use, trying another one...
+Port 5176 is in use, trying another one...
+
+  VITE v7.0.6  ready in 484 ms
+
+  ➜  Local:   http://localhost:5177/
+  ➜  Network: use --host to expose

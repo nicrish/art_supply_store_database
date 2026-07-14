@@ -1,0 +1,6 @@
+nohup: ignoring input
+
+> ptda-package@0.0.0 production
+> node reactServer.cjs
+
+Server running: http://classwork.engr.oregonstate.edu:5391...
