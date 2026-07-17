@@ -422,5 +422,5 @@ app.post('/productreceipts/update', async function (req, res) {
 
 
 app.listen(PORT, function () {
-    console.log('Express started on http://classwork.engr.oregonstate.edu:' + PORT + '; press Ctrl-C to terminate.');
+    console.log('Express started ' + PORT + '; press Ctrl-C to terminate.');
 });
