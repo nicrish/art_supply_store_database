@@ -1,4 +1,8 @@
-DROP PROCEDURE sp_load_art_supplies_db;
+USE art_supply_store;
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS sp_load_art_supplies_db;
 CREATE PROCEDURE `sp_load_art_supplies_db`()
 BEGIN
 
@@ -142,4 +146,6 @@ BEGIN
 
 
   SET FOREIGN_KEY_CHECKS=1;
-END
+END $$
+
+DELIMITER ;

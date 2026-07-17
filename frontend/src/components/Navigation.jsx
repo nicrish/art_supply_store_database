@@ -8,13 +8,13 @@
 function Navigation(){
     return (
         <nav>
-            <a href="/">Home</a>
-            <a href="/customers">Customers</a>
-            <a href="/manufacturers">Manufacturers </a>
-            <a href="/orders">Orders</a>
-            <a href="/productreceipts">Product Receipts </a>
-            <a href="/products">Products</a>
-            <a href="/receipts">Receipts</a>
+            <Link to="/">Home</Link>
+            <Link to="/customers">Customers</Link>
+            <Link to="/manufacturers">Manufacturers </Link>
+            <Link to="/orders">Orders</Link>
+            <Link to="/productreceipts">Product Receipts </Link>
+            <Link to="/products">Products</Link>
+            <Link to="/receipts">Receipts</Link>
             
         </nav>
     )
