@@ -16,23 +16,10 @@ app.use(express.json()); // this is needed for post requests
 
 const PORT = 2124;
 
-// Citation for the following endpoints:  /customers, /manufacturers, /orders, /products, /productreceipts, /receipts
-// Date: 8/13/25
-// Adapted from canvas: "Web Application Technology"
-// Source URL: https://canvas.oregonstate.edu/courses/2007765/pages/exploration-web-application-technology-2?module_item_id=25664612
-// input our own queries and used example as template 
-
-
 app.get('/customers', async (req, res) => {
     try {
-        
-
         const query1 = `SELECT * FROM Customers;`
-      
-        
         const [customers] = await db.query(query1);
-     
-    
         res.status(200).json({ customers });  // Send the results to the frontend
 
     } catch (error) {
@@ -45,14 +32,8 @@ app.get('/customers', async (req, res) => {
 
 app.get('/manufacturers', async (req, res) => {
     try {
-        
-       
         const query1 = `SELECT * FROM Manufacturers;`
-
-
         const [manufacturers] = await db.query(query1);
-
-    
         res.status(200).json({ manufacturers });  // Send the results to the frontend
 
     } catch (error) {
@@ -65,14 +46,8 @@ app.get('/manufacturers', async (req, res) => {
 
 app.get('/orders', async (req, res) => {
     try {
-        
-       
         const query1 = `SELECT Orders.orderID, Orders.date, Orders.quantity, Products.Productname FROM Orders INNER JOIN Products ON Products.ProductID = Orders.ProductID;`
-
-
         const [orders] = await db.query(query1);
-
-    
         res.status(200).json({ orders });  // Send the results to the frontend
 
     } catch (error) {
@@ -85,18 +60,11 @@ app.get('/orders', async (req, res) => {
 
 app.get('/products', async (req, res) => {
     try {
-        
-       
         const query1 = `SELECT Products.productID, Products.productName, Products.price, Products.sellPrice, Products.newProduct, Products.firstDateOrdered, Manufacturers.name from Products INNER JOIN Manufacturers WHERE Manufacturers.manufacturerID = Products.manufacturerID;;`
-        
         const query2 = 'SELECT * FROM Manufacturers;';
-
         const [products] = await db.query(query1);
         console.log("Receipts fetched successfully");
-
         const [manufacturers] = await db.query(query2);
-
-    
         res.status(200).json({ products, manufacturers });  // Send the results to the frontend
 
     } catch (error) {
@@ -109,23 +77,16 @@ app.get('/products', async (req, res) => {
 
 app.get('/productreceipts', async (req, res) => {
     try {
-        
-       
         const query1 = `SELECT ProductReceipts.productReceiptID, Products.productName, Receipts.dateTime, ProductReceipts.quantity FROM ProductReceipts
 INNER JOIN Products ON Products.productID = ProductReceipts.productID
 INNER JOIN Receipts ON Receipts.receiptID = ProductReceipts.receiptID;
 `
-
         const query2 = `SELECT * FROM Products`
-
         const query3 = `SELECT * FROM Receipts`
-
-
         const [productreceipts] = await db.query(query1);
         const [products] = await db.query(query2);
         const [receipts] = await db.query(query3)
-
-    
+   
         res.status(200).json({ productreceipts, products, receipts });  // Send the results to the frontend
 
     } catch (error) {
@@ -163,11 +124,7 @@ app.get('/receipts', async (req, res) => {
 });
 
 
-// Citation for the following endpoints:  /productreceipts/delete, /productreceipts/create, /reset, /product/create, /product/update
-// Date: 8/13/25
-// Adapted from canvas: "Implementing CUD operations in your app"
-// Source URL: https://canvas.oregonstate.edu/courses/2007765/pages/exploration-implementing-cud-operations-in-your-app?module_item_id=25664628
-// input our function names and property names that relate to the data in our database
+
 
 app.post('/productreceipts/delete', async function(req, res){
     try{
@@ -196,7 +153,7 @@ app.post('/products/delete', async function(req, res){
         let data = req.body
 
         console.log(data)
-        const query1 = `CALL sp_DeleteProduct();`
+        const query1 = `CALL sp_DeleteProduct(?);`
         await db.query(query1, [data.delete_product_id])
 
         console.log(`DELETE productreceipts. ID:${data.delete_product_id}` + 

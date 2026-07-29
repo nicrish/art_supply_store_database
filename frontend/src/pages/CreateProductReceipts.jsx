@@ -1,9 +1,3 @@
-// Citation for the following function: CreateProductReceipt
-// Date: 8/13/25
-// Adapted from canvas: "Exploration - Implementing CUD operations in your app "
-// Source URL: https://canvas.oregonstate.edu/courses/2007765/pages/exploration-implementing-cud-operations-in-your-app?module_item_id=25664628
-// changed passed props, form fields, and endpoint for fetch call but used example as a template
-
 
 import React, { useState } from 'react';
 

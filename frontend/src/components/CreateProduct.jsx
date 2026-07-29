@@ -1,8 +1,3 @@
-// Citation for the following function: CreateProductForm
-// Date: 8/13/25
-// Adapted from canvas: "Exploration - Implementing CUD operations in your app "
-// Source URL: https://canvas.oregonstate.edu/courses/2007765/pages/exploration-implementing-cud-operations-in-your-app?module_item_id=25664628
-// changed parameters/props passed in, form fields, route for fetch to match our data base attributes instead of bsg people attributes
 
 import React, { useState } from 'react';
 
@@ -110,7 +105,7 @@ const CreateProductForm = ({ manufacturers, backendURL, refreshData }) => {
                 <option value="">Select a Manufacturer</option>
                 <option value="NULL">&lt; None &gt;</option>
                 {manufacturers.map((manufacturer, index) => (
-                    <option value={manufacturer.id} key={index}>{manufacturer.name}</option>
+                    <option value={manufacturer.name} key={index}>{manufacturer.name}</option>
                 ))}
             </select>
             <input type="submit" />
