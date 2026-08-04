@@ -253,37 +253,30 @@ app.post('/productreceipt/create', async function (req, res) {
         console.log("POST /productreceipt/create hit");
         console.log("Body received:", req.body);
 
-        console.log("I am the first")
-        // Parse frontend form information
         let data = req.body;
 
+        console.log("→ Quantity:", data.create_productreceipt_quantity);
+        console.log("→ Product:", data.create_productreceipt_productName);
+        console.log("→ ReceiptDateTime:", data.create_productreceipt_receiptDateTime);
+
+        // Convert ISO datetime string (from JSON) into MySQL DATETIME format
+        const rawDateTime = data.create_productreceipt_receiptDateTime;
+        const formattedDateTime = rawDateTime.slice(0, 19).replace('T', ' ');
 
         const query1 = `CALL sp_CreateProductReceipt(?, ?, ?, @newID);`;
-
-
-        console.log("→ Quantity:", req.body.create_productreceipt_quantity);
-        console.log("→ Product:", req.body.create_productreceipt_productName);
-        console.log("→ ReceiptDateTime:", req.body.create_productreceipt_receiptDateTime);
-
-        
-
-        
 
         const [[[rows]]] = await db.query(query1, [
             data.create_productreceipt_quantity,
             data.create_productreceipt_productName,
-            data.create_productreceipt_receiptDateTime
-            
-        
+            formattedDateTime
         ]);
 
-        console.log(`CREATE productreceipt. ID: ${rows.new_id} `)
+        console.log(`CREATE productreceipt. ID: ${rows.new_id}`);
 
         // Send success status to frontend
         res.status(200).json({ message: 'ProductReceipt created successfully' });
     } catch (error) {
         console.error('Error executing queries:', error);
-        // Send a generic error message to the browser
         res.status(500).send(
             'An error occurred while executing the database queries.'
         );
