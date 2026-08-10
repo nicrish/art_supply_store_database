@@ -29,6 +29,48 @@ app.get('/customers', async (req, res) => {
     }
     
 });
+app.post('/customers/update', async function (req, res) {
+    try {
+        // Parse frontend form information
+        const data = req.body;
+
+        if(isNaN(parseInt(data.quantity))) data.quantity = null
+        if(isNaN(parseInt(data.productID))) data.productID = null
+        if(isNaN(parseInt(data.productID))) data.productID = null
+
+        const query1 = `CALL sp_UpdateProductReceipt(?, ?, ?,
+         ?);`;
+
+        const query2 = `SELECT productID, receiptID FROM ProductReceipts WHERE productReceiptID = ?;`
+
+        await db.query(query1, [
+            data.productReceiptID,
+            data.quantity,
+            data.productID,
+            data.receiptID,
+            
+        ])
+
+        const [[rows]] = await db.query(query2, [data.productReceiptID])
+        
+        console.log(`Update productreceipt. ID: ${data.productReceiptID} ` +
+            `Name: ${rows.productID}`
+        );
+
+        // Send success status to frontend
+        res.status(200).json({ message: 'ProductReceipt updated successfully' });
+        
+    } catch (error) {
+        console.error('Error executing queries:', error);
+        // Send a generic error message to the browser
+        res.status(500).send(
+            'An error occurred while executing the database queries.'
+        );
+    }
+});
+
+
+
 
 app.get('/manufacturers', async (req, res) => {
     try {
