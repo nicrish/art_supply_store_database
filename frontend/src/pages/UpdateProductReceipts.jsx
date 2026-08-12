@@ -1,8 +1,3 @@
-// Citation for the following function: UpdateProductReceiptForm
-// Date: 8/13/25
-// Adapted from canvas: "Implementing CUD operations in your app"
-// Source URL: https://canvas.oregonstate.edu/courses/2007765/pages/exploration-implementing-cud-operations-in-your-app?module_item_id=25664628
-// changed parameters/props passed in, form fields, route for fetch to match our data base attributes instead of bsg people attributes
 
 
 import React, {useState} from 'react'
@@ -10,14 +5,14 @@ import React, {useState} from 'react'
 const UpdateProductReceiptForm = ({ productreceipts, products, receipts, backendURL, refreshData}) => {
     
         const [formData, setFormData] = useState({
-            productReceiotID: '',
+            productReceiptID: '',
             quantity: '',
             productID: '',
             receiptID: ''
 
          
         })
-    
+        const [statusMessage, setStatusMessage] = useState('');
     
         const handleChange = (e) => {
             const {name, value} = e.target
@@ -39,9 +34,12 @@ const UpdateProductReceiptForm = ({ productreceipts, products, receipts, backend
                 if(response.ok){
                     alert("Successfully updated product receipt")
                     console.log("product receipt updated successfully")
-                    refreshData()
+                    setStatusMessage('Product receipt updated successfully!');
+                    refreshData();
+                    
                 }else{
                     console.error("Error updating product receipt")
+                    setStatusMessage('Error updating product receipt. Please check your inputs and try again.');
                 }
             }catch(error){
                 console.error('Error during form submission:', error)
@@ -52,6 +50,11 @@ const UpdateProductReceiptForm = ({ productreceipts, products, receipts, backend
     return (
         <>
         <h2>Update a Product Receipt</h2>
+
+
+        {statusMessage && <p>{statusMessage}</p>}
+
+
         <form className='cuForm' onSubmit={handleSubmit}>
             <label htmlFor="productReceiptID">Product Receipt to Update: </label>
             <select
