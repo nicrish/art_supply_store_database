@@ -1,15 +1,10 @@
-// Citation for the following page/component/function: Receipts
-// Date: 8/13/25
-// Adapted from canvas: "Exploration - Web Application Technology-React"
-// Source URL: https://canvas.oregonstate.edu/courses/2007765/pages/exploration-web-application-technology-2?module_item_id=25664612
-// used bsg entity page creation as a template and filled in our table, attribute, and variable names
-
-
 import { useState, useEffect } from 'react';  // Importing useState for managing state in the component
 import EntityRow from '../components/EntityRow';
 import { header } from 'express-validator';
-import CreateReceiptForm from '../components/CreateReceipt';
+
 import ResetButton from './ResetButton';
+// import UpdateProductReceipts from './UpdateProductReceipts';
+import CreateReceipt from './CreateReceipts';
 
 function Receipts({backendURL}){
     const [receipts, setReceipts] = useState([])
@@ -60,7 +55,7 @@ function Receipts({backendURL}){
 
                 </tbody>
             </table>
-            <CreateReceiptForm
+            <CreateReceipt
                 customers={customers}
                 receipts ={receipts}
                 backendURL={backendURL}
