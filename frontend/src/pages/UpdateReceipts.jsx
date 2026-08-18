@@ -1,52 +1,56 @@
 import React, { useState } from 'react';
 
+const UpdateReceiptForm = ({ receipts, customers, backendURL, refreshData }) => {
 
+    const [formData, setFormData] = useState({
+        receiptID: '',
+        dateTime: '',
+        customerID: '',
+    });
 
-const UpdateReceipt = ({ customers, backendURL, refreshData }) => {
+    const [statusMessage, setStatusMessage] = useState('');
 
-        const [formData, setFormData] = useState({
-            receipt_dateTime: '',
-            receipt_firstName: '',
-            receipt_lastName: '',
-        });
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
 
-        const [statusMessage, setStatusMessage] = useState('');
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-        const handleChange = (e) => {
-            const { name, value } = e.target;
-            setFormData(prevState => ({
-                ...prevState,
-                [name]: value
-            }));
-        };
+        try {
+            // datetime-local gives "YYYY-MM-DDTHH:MM" — convert to MySQL DATETIME format
+            const submissionData = {
+                ...formData,
+                dateTime: formData.dateTime
+                    ? formData.dateTime.replace('T', ' ') + ':00'
+                    : formData.dateTime
+            };
 
-        const handleSubmit = async (e) => {
-            e.preventDefault(); // Prevent default form submission
+            console.log(submissionData);
 
-            try {
-                console.log(formData)
-                const response = await fetch(backendURL + '/receipt/update', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
+            const response = await fetch(backendURL + '/receipt/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(submissionData)
+            });
 
-                });
-
-                if (response.ok) {
-                    console.log("receipt updated successfully.");
-                    setStatusMessage('Receipt updated successfully!');
-                    refreshData();
-                } else {
-                    console.log(backendURL + '/receipt/update')
-
-                    console.error("Error updating receipt.");
-                    setStatusMessage('Error updating receipt. Please check your inputs and try again.');
-                }
-            } catch (error) {
-                console.error('Error during form submission:', error);
-                setStatusMessage('Error connecting to the server. Please try again.');
+            if (response.ok) {
+                console.log("Receipt updated successfully.");
+                setStatusMessage('Receipt updated successfully!');
+                refreshData();
+            } else {
+                console.error("Error updating receipt.");
+                setStatusMessage('Error updating receipt. Please check your inputs and try again.');
             }
-        };
+        } catch (error) {
+            console.error('Error during form submission:', error);
+            setStatusMessage('Error connecting to the server. Please try again.');
+        }
+    };
 
     return (
         <>
@@ -55,35 +59,44 @@ const UpdateReceipt = ({ customers, backendURL, refreshData }) => {
         {statusMessage && <p>{statusMessage}</p>}
 
         <form className='cuForm' onSubmit={handleSubmit}>
-            <label htmlFor="receipt_dateTime">Date/Time: </label>
-                <input
-                    type="datetime-local"
-                    name="receipt_dateTime"
-                    id="receipt_dateTime"
-                    value={formData.receipt_dateTime}
-                    onChange = {handleChange}
-                />
-
-            <label htmlFor="receipt_firstName">Customer First Name: </label>
+            <label htmlFor="receiptID">Receipt to Update: </label>
             <select
-                name="receipt_firstName"
-                id="receipt_firstName"
+                name="receiptID"
+                id="receiptID"
+                value={formData.receiptID}
                 onChange={handleChange}
             >
-                <option value="">Select a Customer</option>
-                {customers.map((c, index) => (
-                    <option value={c.firstName} key={index}>{c.firstName} {c.lastName}</option>
+                <option value="">Select a Receipt</option>
+                {receipts.map((r) => (
+                    <option key={r.receiptID} value={r.receiptID}>
+                        Receipt - {r.receiptID}: {r.firstName} {r.lastName} ({r.dateTime})
+                    </option>
                 ))}
             </select>
 
-            <label htmlFor="receipt_lastName">Customer Last Name: </label>
+            <label htmlFor="dateTime">Date/Time: </label>
             <input
-                type="text"
-                name="receipt_lastName"
-                id="receipt_lastName"
-                value={formData.receipt_lastName}
+                type="datetime-local"
+                name="dateTime"
+                id="dateTime"
+                value={formData.dateTime}
                 onChange={handleChange}
             />
+
+            <label htmlFor="customerID">Customer: </label>
+            <select
+                name="customerID"
+                id="customerID"
+                value={formData.customerID}
+                onChange={handleChange}
+            >
+                <option value="">Select a Customer</option>
+                {customers.map((c) => (
+                    <option key={c.customerID} value={c.customerID}>
+                        {c.firstName} {c.lastName}
+                    </option>
+                ))}
+            </select>
 
             <input type="submit" />
         </form>
@@ -91,4 +104,4 @@ const UpdateReceipt = ({ customers, backendURL, refreshData }) => {
     );
 };
 
-export default UpdateReceipt;
+export default UpdateReceiptForm;

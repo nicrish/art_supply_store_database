@@ -3,7 +3,7 @@ import EntityRow from '../components/EntityRow';
 import { header } from 'express-validator';
 
 import ResetButton from './ResetButton';
-// import UpdateProductReceipts from './UpdateProductReceipts';
+import UpdateReceiptForm from './UpdateReceipts';
 import CreateReceipt from './CreateReceipts';
 
 function Receipts({backendURL}){
@@ -56,6 +56,13 @@ function Receipts({backendURL}){
                 </tbody>
             </table>
             <CreateReceipt
+                customers={customers}
+                receipts ={receipts}
+                backendURL={backendURL}
+                refreshData={getData}
+            
+            />
+            <UpdateReceiptForm
                 customers={customers}
                 receipts ={receipts}
                 backendURL={backendURL}
