@@ -9,6 +9,10 @@ import { useState, useEffect } from 'react';  // Importing useState for managing
 import EntityRow from '../components/EntityRow';
 import { header } from 'express-validator';
 
+import ResetButton from './ResetButton';
+import UpdateCustomer from './UpdateCustomer';
+import CreateCustomer from './CreateCustomer';
+
 function Customers({backendURL}){
     const [customers, setCustomers] = useState([])
 
@@ -53,6 +57,16 @@ function Customers({backendURL}){
 
                 </tbody>
             </table>
+            <CreateCustomer
+                backendURL={backendURL}
+                refreshData={getData}
+            
+            />
+            <UpdateCustomer
+                backendURL={backendURL}
+                refreshData={getData}
+            
+            />
         
         
         

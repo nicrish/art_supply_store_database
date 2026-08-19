@@ -29,6 +29,67 @@ app.get('/customers', async (req, res) => {
     }
     
 });
+app.post('/customer/create', async function (req, res) {
+    try {
+        const data = req.body;
+
+        const query1 = `CALL sp_CreateCustomer(?, ?, ?, ?, ?, @new_id);`;
+
+        const [[[rows]]] = await db.query(query1, [
+            data.create_customer_firstName,
+            data.create_customer_lastName,
+            data.create_customer_email,
+            data.create_customer_address,
+            data.create_customer_phoneNumber
+        ]);
+
+        console.log(`CREATE customer. ID: ${rows.new_id} ` +
+            `Name: ${data.create_customer_firstName} ${data.create_customer_lastName}`
+        );
+
+        res.status(200).json({ message: 'Customer created successfully' });
+    } catch (error) {
+        console.error('Error executing queries:', error);
+        res.status(500).send(
+            'An error occurred while executing the database queries.'
+        );
+    }
+});
+
+
+app.post('/customer/update', async function (req, res) {
+    try {
+        const data = req.body;
+
+        if (isNaN(parseInt(data.customerID))) data.customerID = null;
+
+        const query1 = `CALL sp_UpdateCustomer(?, ?, ?, ?, ?, ?);`;
+
+        const query2 = `SELECT firstName, lastName FROM Customers WHERE customerID = ?;`;
+
+        await db.query(query1, [
+            data.customerID,
+            data.firstName,
+            data.lastName,
+            data.email,
+            data.address,
+            data.phoneNumber
+        ]);
+
+        const [[rows]] = await db.query(query2, [data.customerID]);
+
+        console.log(`Update customer. ID: ${data.customerID} ` +
+            `Name: ${rows.firstName} ${rows.lastName}`
+        );
+
+        res.status(200).json({ message: 'Customer updated successfully' });
+    } catch (error) {
+        console.error('Error executing queries:', error);
+        res.status(500).send(
+            'An error occurred while executing the database queries.'
+        );
+    }
+});
 
 app.get('/manufacturers', async (req, res) => {
     try {
