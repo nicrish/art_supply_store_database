@@ -9,11 +9,6 @@ CREATE  PROCEDURE `sp_CreateProduct`(
     IN manufacturerName VARCHAR(255),
     OUT productID INT(11))
 BEGIN
--- Citation for the following function: sp_CreateProduct
--- Date: 08/14/2025
--- Adapted from : canvas starter code
--- Source URL: https://canvas.oregonstate.edu/courses/2007765/pages/exploration-implementing-cud-operations-in-your-app?module_item_id=25664628
-     
 
     DECLARE mID INT;
     SELECT manufacturerID INTO mID
@@ -43,19 +38,7 @@ CREATE DEFINER=`cs340_rishwain`@`%` PROCEDURE `sp_CreateProductReceipt`(
 BEGIN
 	DECLARE rID INT;
     DECLARE pID INT;
--- Citation for the following function: sp_CreateProductReceipt
--- Date: 08/14/2025
--- Adapted from : canvas starter code
--- Source URL: https://canvas.oregonstate.edu/courses/2007765/pages/exploration-implementing-cud-operations-in-your-app?module_item_id=25664628
 
--- Citation for use of AI Tools:
--- Date: 08/14/2025
--- Prompts used to fix PL/SQL 
--- date and time was not matching up on the database and website
--- share sql procedure and asked how to fix it 
--- asked how to make the it less specific and just do within 24 hour
--- it suggested to use DATE() function
--- AI Source URL: https://copilot.microsoft.com/
 
    
     
@@ -184,11 +167,7 @@ DROP PROCEDURE IF EXISTS sp_DeleteReceipt;
 DELIMITER $$
 CREATE DEFINER=`cs340_rishwain`@`%` PROCEDURE `sp_DeleteReceipt`(IN r_id INT)
 BEGIN
--- Citation for the following function: sp_DeleteReceipt
--- Date: 08/14/2025
--- Adapted from : canvas starter code
--- Source URL: https://canvas.oregonstate.edu/courses/2007765/pages/exploration-implementing-cud-operations-in-your-app?module_item_id=25664628
-     
+
     DECLARE error_message VARCHAR(255);
     -- error handling
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -248,6 +227,47 @@ BEGIN
   ('Tim', 'Brown', '123 45th St Seattle, WA 98105','206-555-2911','tim.brown@gmail.com'), 
   ('Stacy', 'Robinson', '223 108th st Seattle, WA 98105','206-955-9011','robinson100@gmail.com'),
   ('John', 'Morgan', '305 Portola Ave Seattle, WA 98105','206-001-1513','morga_mnm@gmail.com');
+
+  DROP PROCEDURE IF EXISTS sp_CreateCustomer;
+DELIMITER $$
+CREATE PROCEDURE `sp_CreateCustomer`(
+    IN firstName_Input VARCHAR(100),
+    IN lastName_Input VARCHAR(100),
+    IN email_Input VARCHAR(255),
+    IN address_Input VARCHAR(255),
+    IN phoneNumber_Input VARCHAR(45),
+    OUT new_id INT
+)
+BEGIN
+    INSERT INTO `Customers` (firstName, lastName, email, address, phoneNumber)
+    VALUES (firstName_Input, lastName_Input, email_Input, address_Input, phoneNumber_Input);
+
+    SET new_id = LAST_INSERT_ID();
+END $$
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS sp_UpdateCustomer;
+DELIMITER $$
+CREATE PROCEDURE `sp_UpdateCustomer`(
+    IN customerID_Input INT(11),
+    IN firstName_Input VARCHAR(100),
+    IN lastName_Input VARCHAR(100),
+    IN email_Input VARCHAR(255),
+    IN address_Input VARCHAR(255),
+    IN phoneNumber_Input VARCHAR(45)
+)
+BEGIN
+    UPDATE `Customers`
+    SET firstName = firstName_Input,
+        lastName = lastName_Input,
+        email = email_Input,
+        address = address_Input,
+        phoneNumber = phoneNumber_Input
+    WHERE customerID = customerID_Input;
+END $$
+DELIMITER ;
+
 
   DROP TABLE IF EXISTS `Manufacturers`;
   -- create manufacturers table

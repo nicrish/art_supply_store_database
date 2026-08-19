@@ -63,6 +63,7 @@ function Customers({backendURL}){
             
             />
             <UpdateCustomer
+                customers={customers}
                 backendURL={backendURL}
                 refreshData={getData}
             
