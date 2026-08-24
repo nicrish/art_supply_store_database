@@ -32,21 +32,24 @@ app.get('/customers', async (req, res) => {
 app.post('/customer/create', async function (req, res) {
     try {
         const data = req.body;
-
+ 
         const query1 = `CALL sp_CreateCustomer(?, ?, ?, ?, ?, @new_id);`;
-
-        const [[[rows]]] = await db.query(query1, [
+        const query2 = `SELECT @new_id AS new_id;`;
+ 
+        await db.query(query1, [
             data.create_customer_firstName,
             data.create_customer_lastName,
             data.create_customer_email,
             data.create_customer_address,
             data.create_customer_phoneNumber
         ]);
-
+ 
+        const [[rows]] = await db.query(query2);
+ 
         console.log(`CREATE customer. ID: ${rows.new_id} ` +
             `Name: ${data.create_customer_firstName} ${data.create_customer_lastName}`
         );
-
+ 
         res.status(200).json({ message: 'Customer created successfully' });
     } catch (error) {
         console.error('Error executing queries:', error);
@@ -103,6 +106,66 @@ app.get('/manufacturers', async (req, res) => {
         res.status(500).send("An error occurred while executing the database queries.");
     }
     
+});
+
+app.post('/manufacturer/create', async function (req, res) {
+    try {
+        const data = req.body;
+
+        const query1 = `CALL sp_CreateManufacturer(?, ?, ?, @new_id);`;
+        const query2 = `SELECT @new_id AS new_id;`;
+
+        await db.query(query1, [
+            data.create_manufacturer_name,
+            data.create_manufacturer_phoneNumber,
+            data.create_manufacturer_address
+        ]);
+
+        const [[rows]] = await db.query(query2);
+
+        console.log(`CREATE manufacturer. ID: ${rows.new_id} ` +
+            `Name: ${data.create_manufacturer_name}`
+        );
+
+        res.status(200).json({ message: 'Manufacturer created successfully' });
+    } catch (error) {
+        console.error('Error executing queries:', error);
+        res.status(500).send(
+            'An error occurred while executing the database queries.'
+        );
+    }
+});
+
+
+app.post('/manufacturer/update', async function (req, res) {
+    try {
+        const data = req.body;
+
+        if (isNaN(parseInt(data.manufacturerID))) data.manufacturerID = null;
+
+        const query1 = `CALL sp_UpdateManufacturer(?, ?, ?, ?);`;
+        const query2 = `SELECT name FROM Manufacturers WHERE manufacturerID = ?;`;
+
+        await db.query(query1, [
+            data.manufacturerID,
+            data.name,
+            data.phoneNumber,
+            data.address
+        ]);
+
+        const [[rows]] = await db.query(query2, [data.manufacturerID]);
+
+        console.log(`Update manufacturer. ID: ${data.manufacturerID} ` +
+            `Name: ${rows.name}`
+        );
+
+        res.status(200).json({ message: 'Manufacturer updated successfully' });
+    } catch (error) {
+        console.error('Error executing queries:', error);
+        res.status(500).send(
+            'An error occurred while executing the database queries.'
+        );
+    }
 });
 
 app.get('/orders', async (req, res) => {

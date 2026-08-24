@@ -1,8 +1,3 @@
-// Citation for the following page/component/function: Receipts
-// Date: 8/13/25
-// based on canvas: "Project Step 4 Draft Version: Add RESET stored procedure (SP) and SELECTs for all entities "
-// Source URL: https://canvas.oregonstate.edu/courses/2007765/assignments/10118885?module_item_id=25664632
-// we looked at the example from the given assignment page and the CUD Examples page to write the fetch request
 
 const ResetButton = ({backendURL, refreshData}) => {
    
