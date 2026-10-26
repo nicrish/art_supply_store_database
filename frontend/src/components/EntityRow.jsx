@@ -1,5 +1,5 @@
 
-import DeleteProductReceiptForm from "../pages/DeleteProductReceiptForm"
+import DeleteRowButton from "./DeleteRowButton"
 
 
 
@@ -10,11 +10,13 @@ function EntityRow({rowObject, backendURL, refreshData, showDelete }){
             (
                 <td key = {index}>{value}</td>
                 
-            ))}{showDelete && (
-                 <DeleteProductReceiptForm 
+            ))}
+            {deleteConfig && (
+                 <DeleteRowButton 
                     rowObject = {rowObject} 
                     backendURL={backendURL} 
                     refreshData={refreshData}
+                    {...deleteConfig}
                    />
                 )}
         </tr>

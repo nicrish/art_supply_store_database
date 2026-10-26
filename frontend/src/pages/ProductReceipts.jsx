@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';  // Importing useState for managing state in the component
 import EntityRow from '../components/EntityRow';
 import { header } from 'express-validator';
-import UpdateProductReceipts from './UpdateProductReceipts';
+
 import CreateProductReceipt from './CreateProductReceipts';
 import ResetButton from './ResetButton';
 import UpdateProductReceiptForm from './UpdateProductReceipts';
@@ -51,7 +51,13 @@ function ProductReceipts({backendURL}){
                         rowObject = {productreceipt} 
                         backendURL = {backendURL} 
                         refreshData= {getData}
-                        showDelete={true}/>
+                        deleteConfig={{
+                            idKey: 'productReceiptID',
+                            endpoint: '/productreceipts/delete',
+                            bodyKey: 'delete_receipt_id',
+                            confirmMessage: 'Delete this receipt item?'
+                        }}
+                        />
                     ))}
                     
 

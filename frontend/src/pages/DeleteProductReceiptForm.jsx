@@ -1,8 +1,3 @@
-// Citation for the following function: DeleteProductReceiptForm
-// Date: 8/13/25
-// Adapted from canvas: "Exploration - Implementing CUD operations in your app "
-// Source URL: https://canvas.oregonstate.edu/courses/2007765/pages/exploration-implementing-cud-operations-in-your-app?module_item_id=25664628
-// used the delete form as a template removed information props we did not need and used our own
 
 
 const DeleteProductReceiptForm = ({rowObject, backendURL, refreshData }) => {

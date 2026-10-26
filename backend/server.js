@@ -170,9 +170,11 @@ app.post('/manufacturer/update', async function (req, res) {
 
 app.get('/orders', async (req, res) => {
     try {
-        const query1 = `SELECT Orders.orderID, Orders.date, Orders.quantity, Products.Productname FROM Orders INNER JOIN Products ON Products.ProductID = Orders.ProductID;`
+        const query1 = `SELECT Orders.orderID, Orders.date, Orders.quantity, Products.productName FROM Orders INNER JOIN Products ON Products.productID = Orders.productID;`
+        const query2 = `SELECT * FROM Products;`
         const [orders] = await db.query(query1);
-        res.status(200).json({ orders });  // Send the results to the frontend
+        const [products] = await db.query(query2);
+        res.status(200).json({ orders, products });  // Send the results to the frontend
 
     } catch (error) {
         console.error("Error executing queries:", error);
@@ -180,6 +182,68 @@ app.get('/orders', async (req, res) => {
         res.status(500).send("An error occurred while executing the database queries.");
     }
     
+});
+
+app.post('/order/create', async function (req, res) {
+    try {
+        const data = req.body;
+
+        const query1 = `CALL sp_CreateOrder(?, ?, ?, @new_id);`;
+        const query2 = `SELECT @new_id AS new_id;`;
+
+        await db.query(query1, [
+            data.create_order_date,
+            data.create_order_quantity,
+            data.create_order_productName
+        ]);
+
+        const [[rows]] = await db.query(query2);
+
+        console.log(`CREATE order. ID: ${rows.new_id} ` +
+            `Product: ${data.create_order_productName}`
+        );
+
+        res.status(200).json({ message: 'Order created successfully' });
+    } catch (error) {
+        console.error('Error executing queries:', error);
+        res.status(500).send(
+            'An error occurred while executing the database queries.'
+        );
+    }
+});
+
+
+app.post('/order/update', async function (req, res) {
+    try {
+        const data = req.body;
+
+        if (isNaN(parseInt(data.orderID))) data.orderID = null;
+        if (isNaN(parseInt(data.quantity))) data.quantity = null;
+        if (isNaN(parseInt(data.productID))) data.productID = null;
+
+        const query1 = `CALL sp_UpdateOrder(?, ?, ?, ?);`;
+        const query2 = `SELECT date, quantity FROM Orders WHERE orderID = ?;`;
+
+        await db.query(query1, [
+            data.orderID,
+            data.date,
+            data.quantity,
+            data.productID
+        ]);
+
+        const [[rows]] = await db.query(query2, [data.orderID]);
+
+        console.log(`Update order. ID: ${data.orderID} ` +
+            `Quantity: ${rows.quantity}`
+        );
+
+        res.status(200).json({ message: 'Order updated successfully' });
+    } catch (error) {
+        console.error('Error executing queries:', error);
+        res.status(500).send(
+            'An error occurred while executing the database queries.'
+        );
+    }
 });
 
 app.get('/products', async (req, res) => {

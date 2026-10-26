@@ -1,23 +1,21 @@
-// Citation for the following page/component/function: Orders
-// Date: 8/13/25
-// Adapted from canvas: "Exploration - Web Application Technology-React"
-// Source URL: https://canvas.oregonstate.edu/courses/2007765/pages/exploration-web-application-technology-2?module_item_id=25664612
-// used bsg entity page creation as a template and filled in our table, attribute, and variable names
-
 import { useState, useEffect } from 'react';  // Importing useState for managing state in the component
 import EntityRow from '../components/EntityRow';
-import { header } from 'express-validator';
+
+import CreateOrder from './CreateOrder'
+import UpdateOrder from './UpdateOrder'
 
 function Orders({backendURL}){
     const [orders, setOrders] = useState([])
+    const [products, setProducts] = useState([])
 
     const getData = async function(){
         try{
             const response = await fetch(backendURL + '/orders')
-            const {orders} = await response.json()
+            const {orders, products} = await response.json()
             console.log(orders)
 
             setOrders(orders)
+            setProducts(products)
 
         }catch(error){
             console.log(error)
@@ -35,7 +33,7 @@ function Orders({backendURL}){
                 <thead>
                     <tr>
                         {orders.length > 0 && Object.keys(orders[0]).map((key) => (
-                            <th>{key}</th>
+                            <th key={key}>{key}</th>
                         ))} 
                         
                     </tr>
@@ -52,6 +50,8 @@ function Orders({backendURL}){
 
                 </tbody>
             </table>
+            <CreateOrder products={products} backendURL={backendURL} refreshData={getData} />
+            <UpdateOrder orders={orders} products={products} backendURL={backendURL} refreshData={getData} />
         
         
         
