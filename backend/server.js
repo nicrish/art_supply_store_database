@@ -596,3 +596,71 @@ app.post('/receipt/update', async function (req, res) {
 app.listen(PORT, function () {
     console.log('Express started ' + PORT + '; press Ctrl-C to terminate.');
 });
+
+
+app.post('/customer/delete', async function (req, res) {
+    try {
+        const data = req.body;
+
+        await db.query(`CALL sp_DeleteCustomer(?);`, [data.delete_customer_id]);
+
+        console.log(`DELETE customer. ID: ${data.delete_customer_id}`);
+        res.status(200).json({ message: 'Customer deleted successfully' });
+    } catch (error) {
+        console.error('Error executing queries:', error);
+        res.status(500).send(
+            'An error occurred while executing the database queries.'
+        );
+    }
+});
+
+
+app.post('/manufacturer/delete', async function (req, res) {
+    try {
+        const data = req.body;
+
+        await db.query(`CALL sp_DeleteManufacturer(?);`, [data.delete_manufacturer_id]);
+
+        console.log(`DELETE manufacturer. ID: ${data.delete_manufacturer_id}`);
+        res.status(200).json({ message: 'Manufacturer deleted successfully' });
+    } catch (error) {
+        console.error('Error executing queries:', error);
+        res.status(500).send(
+            'An error occurred while executing the database queries.'
+        );
+    }
+});
+
+
+app.post('/order/delete', async function (req, res) {
+    try {
+        const data = req.body;
+
+        await db.query(`CALL sp_DeleteOrder(?);`, [data.delete_order_id]);
+
+        console.log(`DELETE order. ID: ${data.delete_order_id}`);
+        res.status(200).json({ message: 'Order deleted successfully' });
+    } catch (error) {
+        console.error('Error executing queries:', error);
+        res.status(500).send(
+            'An error occurred while executing the database queries.'
+        );
+    }
+});
+
+
+app.post('/receipt/delete', async function (req, res) {
+    try {
+        const data = req.body;
+
+        await db.query(`CALL sp_DeleteReceipt(?);`, [data.delete_receipt_id]);
+
+        console.log(`DELETE receipt. ID: ${data.delete_receipt_id}`);
+        res.status(200).json({ message: 'Receipt deleted successfully' });
+    } catch (error) {
+        console.error('Error executing queries:', error);
+        res.status(500).send(
+            'An error occurred while executing the database queries.'
+        );
+    }
+});
