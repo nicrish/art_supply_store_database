@@ -3,7 +3,7 @@ import DeleteRowButton from "./DeleteRowButton"
 
 
 
-function EntityRow({rowObject, backendURL, refreshData, showDelete }){
+function EntityRow({rowObject, backendURL, refreshData, deleteConfig }){
     return (
         <tr>
             {Object.values(rowObject).map((value, index)=>
