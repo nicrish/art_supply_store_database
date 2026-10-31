@@ -44,7 +44,13 @@ function Manufacturers({backendURL}){
                             rowObject = {manufacturer} 
                             backendURL = {backendURL} 
                             refreshData = {getData}
-                            showDelete={false}/>
+                            deleteConfig={{
+                                idKey: 'manufacturerID',
+                                endpoint: '/manufacturer/delete',
+                                bodyKey: 'delete_manufacturer_id',
+                                confirmMessage: 'Delete this manufacturer item?'
+                            }}
+                        />
                     ))}
 
                 </tbody>

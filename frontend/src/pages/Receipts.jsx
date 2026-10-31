@@ -50,7 +50,13 @@ function Receipts({backendURL}){
                             rowObject = {receipt} 
                             backendURL = {backendURL} 
                             refreshData = {getData}
-                            showDelete={false}/>
+                            deleteConfig={{
+                                idKey: 'receiptID',
+                                endpoint: '/receipt/delete',
+                                bodyKey: 'delete_receipt_id',
+                                confirmMessage: 'Delete this receipt?'
+                            }}
+                            />
                     ))}
 
                 </tbody>

@@ -614,6 +614,21 @@ app.post('/customer/delete', async function (req, res) {
     }
 });
 
+app.post('/product/delete', async function (req, res) {
+    try {
+        const data = req.body;
+
+        await db.query(`CALL sp_DeleteProduct(?);`, [data.delete_product_id]);
+
+        console.log(`DELETE product. ID: ${data.delete_product_id}`);
+        res.status(200).json({ message: 'Product deleted successfully' });
+    } catch (error) {
+        console.error('Error executing queries:', error);
+        res.status(500).send(
+            'An error occurred while executing the database queries.'
+        );
+    }
+});
 
 app.post('/manufacturer/delete', async function (req, res) {
     try {

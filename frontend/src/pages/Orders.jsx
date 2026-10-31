@@ -45,7 +45,14 @@ function Orders({backendURL}){
                             rowObject = {order} 
                             backendURL = {backendURL} 
                             refreshData = {getData}
-                            showDelete={false}/>
+                            
+                            deleteConfig={{
+                                idKey: 'orderID',
+                                endpoint: '/order/delete',
+                                bodyKey: 'delete_order_id',
+                                confirmMessage: 'Delete this order item?'
+                            }}
+                        />
                     ))}
 
                 </tbody>

@@ -46,7 +46,13 @@ function Customers({backendURL}){
                         rowObject = {customer} 
                         backendURL = {backendURL} 
                         refreshData = {getData}
-                        showDelete={false}/>
+                        deleteConfig={{
+                            idKey: 'customerID',
+                            endpoint: '/customer/delete',
+                            bodyKey: 'delete_customer_id',
+                            confirmMessage: 'Delete this customer?'
+                        }}
+                        />
                     ))}
 
                 </tbody>

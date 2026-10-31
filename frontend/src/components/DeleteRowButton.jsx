@@ -25,7 +25,7 @@ const DeleteRowButton = ({
                 refreshData();
             } else {
                 console.error("Error during deletion");
-                alert("Could not delete this roe. Please try again.");
+                alert("Could not delete this row. Please try again.");
             }
         } catch (error) {
             console.error('Error during deletion:', error);
